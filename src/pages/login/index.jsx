@@ -1,7 +1,8 @@
 import React from "react";
+import AuthSection from "../../components/AuthSection";
 
 const Login = () => {
-  return <div>Login</div>;
+  return <AuthSection loginFlag={true} />;
 };
 
 export default Login;
