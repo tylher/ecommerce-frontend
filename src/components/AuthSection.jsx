@@ -2,8 +2,7 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "./TextInput";
 import { Link } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
-
+import { useGoogleLogin } from "@react-oauth/google";
 const AuthSection = ({ loginFlag }) => {
   const methods = useForm({ mode: "all" });
 
@@ -11,12 +10,26 @@ const AuthSection = ({ loginFlag }) => {
     console.log(data);
   };
 
+  const auth = useGoogleLogin({
+    onSuccess: (tokenResponse) => console.log(tokenResponse),
+  });
+
   return (
     <FormProvider {...methods}>
       <div className="text-center flex flex-col gap-2">
-        <h2 className="text-4xl font-semibold ">Create your account.</h2>
+        <h2 className="text-4xl font-semibold ">
+          {loginFlag ? "Welcome back" : "Create your account."}
+        </h2>
         <p>
-          Already have an account? <Link to={"/signin"}>Sign in</Link>
+          {loginFlag ? "Don't have an account? " : "Already have an account? "}
+          {
+            <Link
+              to={loginFlag ? "/register" : "/signin"}
+              className="text-amber-800"
+            >
+              {loginFlag ? "Sign up" : "Sign in"}
+            </Link>
+          }
         </p>
       </div>
       <form
@@ -71,7 +84,10 @@ const AuthSection = ({ loginFlag }) => {
         <hr className="absolute w-full border-none h-1 bg-gray-700" />
       </div>
 
-      <svg className="w-14 h-14 p-2 shadow-md rounded-lg">
+      <svg
+        className="w-14 h-14 p-2 shadow-xl rounded-lg"
+        onClick={() => auth()}
+      >
         <use xlinkHref="/sprites.svg#google-auth-icon"></use>
       </svg>
     </FormProvider>
