@@ -4,13 +4,13 @@ import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   return (
-    <div className="flex">
-      <section className="w-1/2 max-h-screen">
-        <img src={illustrationImage} className="h-full w-full object-cover" />
+    <div className="flex text-gray-700 font-medium min-h-screen">
+      <section className="w-1/2  flex flex-col items-center justify-center gap-5 px-[5%] py-5">
+        <Outlet />
       </section>
 
-      <section className="w-1/2 h-screen flex flex-col items-center justify-center">
-        <Outlet />
+      <section className="w-1/2 flex flex-col items-center justify-center">
+        <img src={illustrationImage} className="w-full mx-auto " />
       </section>
     </div>
   );

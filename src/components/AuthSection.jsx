@@ -1,6 +1,8 @@
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "./TextInput";
+import { Link } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 
 const AuthSection = ({ loginFlag }) => {
   const methods = useForm({ mode: "all" });
@@ -11,6 +13,12 @@ const AuthSection = ({ loginFlag }) => {
 
   return (
     <FormProvider {...methods}>
+      <div className="text-center flex flex-col gap-2">
+        <h2 className="text-4xl font-semibold ">Create your account.</h2>
+        <p>
+          Already have an account? <Link to={"/signin"}>Sign in</Link>
+        </p>
+      </div>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
         className="w-full flex flex-col items-center justify-center gap-7"
@@ -26,7 +34,7 @@ const AuthSection = ({ loginFlag }) => {
           name={"password"}
           label={"Password"}
           type={"password"}
-          // placeholder={"Example@gmail.com"}
+          placeholder={"**********"}
           options={{
             required: "password is required",
             minLength: {
@@ -40,6 +48,7 @@ const AuthSection = ({ loginFlag }) => {
             name={"Confirm password"}
             label={"Confirm Password"}
             type={"password"}
+            placeholder={"**********"}
             options={{
               required: "password confirmation is required",
               minLength: {
@@ -53,9 +62,18 @@ const AuthSection = ({ loginFlag }) => {
         <input
           value={loginFlag ? "Login" : "Sign up"}
           type="submit"
-          className="text-white px-4 py-2 bg-amber-800 w-4/5 rounded-3xl"
+          className="text-white px-4 py-2 bg-amber-800 w-full rounded-3xl"
         />
       </form>
+
+      <div className="relative w-full flex justify-center items-center ">
+        <p className="px-3 text-lg font-semibold z-10 bg-white ">OR</p>
+        <hr className="absolute w-full border-none h-1 bg-gray-700" />
+      </div>
+
+      <svg className="w-14 h-14 p-2 shadow-md rounded-lg">
+        <use xlinkHref="/sprites.svg#google-auth-icon"></use>
+      </svg>
     </FormProvider>
   );
 };

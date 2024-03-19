@@ -7,7 +7,7 @@ const TextInput = ({ name, options, type, placeholder, label, value }) => {
     formState: { errors },
   } = useFormContext();
   return (
-    <div className="flex flex-col  w-4/5  items-center gap-2">
+    <div className="flex flex-col  w-full  items-center gap-2">
       <label htmlFor={name} className="self-start">
         {label}
       </label>
