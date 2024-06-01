@@ -20,7 +20,7 @@ const AuthSection = ({ loginFlag }) => {
         <h2 className="text-4xl font-semibold ">
           {loginFlag ? "Welcome back" : "Create your account."}
         </h2>
-        <p>
+        <p className="absolute sm:static bottom-10 w-full text-center left-0 ">
           {loginFlag ? "Don't have an account? " : "Already have an account? "}
           {
             <Link
@@ -41,7 +41,13 @@ const AuthSection = ({ loginFlag }) => {
           label={"Email"}
           type={"email"}
           placeholder={"Example@gmail.com"}
-          options={{ required: "your email is required" }}
+          options={{
+            required: "your email is required",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "invalid email entered",
+            },
+          }}
         />
         <TextInput
           name={"password"}

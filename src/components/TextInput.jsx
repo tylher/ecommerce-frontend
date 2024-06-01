@@ -20,7 +20,7 @@ const TextInput = ({ name, options, type, placeholder, label, value }) => {
         className="border border-gray-300 w-full px-5 py-2 outline-none rounded-3xl"
       />
       {errors[name] && (
-        <span className="text-red-500 block self-start">
+        <span className="text-red-500 text-xs block self-start">
           {errors[name].message}
         </span>
       )}
