@@ -16,6 +16,7 @@ const TextInput = ({ name, options, type, placeholder, label, value }) => {
         type={type}
         name={name}
         id={name}
+        // value={value}
         placeholder={placeholder}
         className="border border-gray-300 w-full px-5 py-2 outline-none rounded-3xl"
       />

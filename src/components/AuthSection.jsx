@@ -14,88 +14,97 @@ const AuthSection = ({ loginFlag }) => {
     onSuccess: (tokenResponse) => console.log(tokenResponse),
   });
 
+  const validatePasswordConfirmation = () => {
+    return methods.register["Password"] == methods.register["Confirm Password"];
+  };
+
   return (
     <FormProvider {...methods}>
-      <div className="text-center flex flex-col gap-2">
-        <h2 className="text-4xl font-semibold ">
-          {loginFlag ? "Welcome back" : "Create your account."}
-        </h2>
-        <p className="absolute sm:static bottom-10 w-full text-center left-0 ">
-          {loginFlag ? "Don't have an account? " : "Already have an account? "}
-          {
-            <Link
-              to={loginFlag ? "/register" : "/signin"}
-              className="text-amber-800"
-            >
-              {loginFlag ? "Sign up" : "Sign in"}
-            </Link>
-          }
-        </p>
-      </div>
-      <form
-        onSubmit={methods.handleSubmit(onSubmit)}
-        className="w-full flex flex-col items-center justify-center gap-7"
-      >
-        <TextInput
-          name={"email"}
-          label={"Email"}
-          type={"email"}
-          placeholder={"Example@gmail.com"}
-          options={{
-            required: "your email is required",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "invalid email entered",
-            },
-          }}
-        />
-        <TextInput
-          name={"password"}
-          label={"Password"}
-          type={"password"}
-          placeholder={"**********"}
-          options={{
-            required: "password is required",
-            minLength: {
-              value: 8,
-              message: "password should be more than 8 characters",
-            },
-          }}
-        />
-        {!loginFlag && (
+      <div className=" min-h-full w-full flex flex-col items-center justify-center gap-5 px-[5%] pt-10 pb-20 sm:py-10">
+        <div className="text-center flex flex-col gap-2">
+          <h2 className="text-4xl font-semibold ">
+            {loginFlag ? "Welcome back" : "Create your account."}
+          </h2>
+          <p className="absolute sm:static bottom-10 w-full text-center left-0 ">
+            {loginFlag
+              ? "Don't have an account? "
+              : "Already have an account? "}
+            {
+              <Link
+                to={loginFlag ? "/register" : "/signin"}
+                className="text-amber-800"
+              >
+                {loginFlag ? "Sign up" : "Sign in"}
+              </Link>
+            }
+          </p>
+        </div>
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="w-full flex flex-col items-center justify-center gap-7"
+        >
           <TextInput
-            name={"Confirm password"}
-            label={"Confirm Password"}
+            name={"email"}
+            label={"Email"}
+            type={"email"}
+            placeholder={"Example@gmail.com"}
+            options={{
+              required: "your email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "invalid email entered",
+              },
+            }}
+          />
+          <TextInput
+            name={"password"}
+            label={"Password"}
             type={"password"}
             placeholder={"**********"}
             options={{
-              required: "password confirmation is required",
+              required: "password is required",
               minLength: {
                 value: 8,
                 message: "password should be more than 8 characters",
               },
             }}
           />
-        )}
+          {!loginFlag && (
+            <TextInput
+              name={"Confirm password"}
+              label={"Confirm Password"}
+              type={"password"}
+              placeholder={"**********"}
+              options={{
+                required: "password confirmation is required",
+                minLength: {
+                  value: 8,
+                  message: "password should be more than 8 characters",
+                },
+                validate: validatePasswordConfirmation,
+              }}
+            />
+          )}
 
-        <input
-          value={loginFlag ? "Login" : "Sign up"}
-          type="submit"
-          className="text-white px-4 py-2 bg-amber-800 w-full rounded-3xl"
-        />
-      </form>
+          <input
+            value={loginFlag ? "Login" : "Sign up"}
+            type="submit"
+            className="text-white px-4 py-2 bg-amber-800 w-full rounded-3xl"
+          />
+        </form>
 
-      <div className="relative w-full flex justify-center items-center ">
-        <p className="px-3 text-lg font-semibold z-10 bg-white ">OR</p>
-        <hr className="absolute w-full border-none h-1 bg-gray-700" />
+        <div className="relative w-full flex justify-center items-center ">
+          <p className="px-3 text-lg font-semibold z-10 bg-white ">OR</p>
+          <hr className="absolute w-full border-none h-1 bg-gray-700" />
+        </div>
+
+        <svg
+          className="w-14 h-14 p-2 shadow-xl rounded-lg"
+          onClick={() => auth()}
+        >
+          <use xlinkHref="/sprites.svg#google-auth-icon"></use>
+        </svg>
       </div>
-
-      <svg
-        className="w-14 h-14 p-2 shadow-xl rounded-lg"
-        onClick={() => auth()}
-      >
-        <use xlinkHref="/sprites.svg#google-auth-icon"></use>
-      </svg>
     </FormProvider>
   );
 };
