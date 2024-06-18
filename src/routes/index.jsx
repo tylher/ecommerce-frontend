@@ -5,13 +5,18 @@ import Login from "../pages/login";
 import AuthLayout from "../pages/AuthLayout";
 
 export const allPages = createBrowserRouter([
+  // {
+  //   element: <ProtectedLayout />,
+  //   children: [
+  //     {
+  //       element: <AppLayout />,
+  //       children: [],
+  //     },
+  //   ],
+  // },
   {
     element: <AuthLayout />,
     children: [
-      {
-        element: <SignUp />,
-        path: "/register",
-      },
       {
         element: <SignUp />,
         path: "/",
@@ -22,4 +27,13 @@ export const allPages = createBrowserRouter([
       },
     ],
   },
+  // {
+  //   element: <AppLayout />,
+  //   children: [
+  //     {
+  //       element: <Homepage />,
+  //       path: "/",
+  //     },
+  //   ],
+  // },
 ]);

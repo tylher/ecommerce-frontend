@@ -1,25 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import TextInput from "./TextInput";
 import { Link } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useSignInGoogleUserMutation } from "../services/api/auth";
+import { setUserId } from "../redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 const AuthSection = ({ loginFlag }) => {
   const methods = useForm({ mode: "all" });
+
+  const [signInGoogleUser, { isLoading, isSuccess }] =
+    useSignInGoogleUserMutation();
+
+  const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     console.log(data);
   };
 
+  const { userId } = useSelector((state) => state.encryptedState.auth);
+
   const auth = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
+    onSuccess: async (tokenResponse) => {
+      const user = await signInGoogleUser({
+        accessToken: tokenResponse.access_token,
+      })
+        .unwrap()
+        .then((response) => {
+          dispatch(setUserId(response.data.user.userId));
+          // dispatch({ type: "RESET STATE" });
+        });
+    },
   });
 
   const validatePasswordConfirmation = () => {
-    return methods.register["Password"] == methods.register["Confirm Password"];
+    return methods.watch()["password"] == methods.watch()["confirm_password"];
   };
 
   return (
     <FormProvider {...methods}>
+      <h2>{userId}</h2>
       <div className=" min-h-full w-full flex flex-col items-center justify-center gap-5 px-[5%] pt-10 pb-20 sm:py-10">
         <div className="text-center flex flex-col gap-2">
           <h2 className="text-4xl font-semibold ">
@@ -71,7 +91,7 @@ const AuthSection = ({ loginFlag }) => {
           />
           {!loginFlag && (
             <TextInput
-              name={"Confirm password"}
+              name={"confirm_password"}
               label={"Confirm Password"}
               type={"password"}
               placeholder={"**********"}
@@ -81,7 +101,8 @@ const AuthSection = ({ loginFlag }) => {
                   value: 8,
                   message: "password should be more than 8 characters",
                 },
-                validate: validatePasswordConfirmation,
+                validate: () =>
+                  validatePasswordConfirmation() || "password does not match",
               }}
             />
           )}

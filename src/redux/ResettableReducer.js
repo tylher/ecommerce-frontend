@@ -1,5 +1,5 @@
 const resettableReducer = (reducer, initialState) => (state, action) => {
-  if ((action.type = "RESET STATE")) {
+  if (action.type === "RESET STATE") {
     return initialState;
   }
 

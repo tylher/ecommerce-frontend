@@ -1,14 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { build } from "vite";
+import { tagTypes } from "../tagTypes";
 
-const authApi = createApi({
+export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080",
+    baseUrl: "http://localhost:8080/auth",
     prepareHeaders: (headers, { getState, endpoint }) => {
       const token = getState().encryptedState.auth?.token;
       // const unprotectedEndpoints= ["/signin","/signup","/login"]
-      if (token && endpoint == "logoutUser") {
+      if (!!token && endpoint == "logoutUser") {
         headers.set("authorization", `Bearer ${token}`);
       }
 
@@ -35,9 +35,15 @@ const authApi = createApi({
     }),
     signInGoogleUser: builder.mutation({
       query: ({ accessToken, roles = "USER" }) => ({
-        url: `signin?credential=${accessToken}&roles=${roles}`,
+        url: `signin?accessToken=${accessToken}&roles=${roles}`,
         method: "POST",
       }),
     }),
   }),
 });
+
+export const {
+  useLoginUserMutation,
+  useSignUpUserMutation,
+  useSignInGoogleUserMutation,
+} = authApi;
